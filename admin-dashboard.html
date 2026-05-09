@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Admin Dashboard for Industrial & Domestic Cleaning Solutions">
+    <meta name="theme-color" content="#071021">
+    <link rel="manifest" href="manifest.json">
+    <title>Admin Dashboard - Industrial & Domestic Cleaning Solutions</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-page="admin-dashboard">
+    <div class="page">
+        <div class="dash-header">
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <img src="logo.jpeg" alt="Logo" style="height: 50px; width: auto; border-radius: 8px;">
+                <div>
+                    <h1 class="dash-title">Admin Dashboard</h1>
+                    <p class="dash-sub">Managed by admin@cleaning.com | Support: +1 (224) 440-0570</p>
+                </div>
+            </div>
+            <div class="dash-actions">
+                <a href="index.html" class="btn dark">Home</a>
+                <a href="register.html" class="btn dark">Create Customer</a>
+                <a href="customer-dashboard.html" class="btn dark">Customer Portal</a>
+                <button id="logout-button" class="btn primary" type="button">Logout</button>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Customers</div>
+                <div class="stat-value" id="admin-total-customers">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Invoices</div>
+                <div class="stat-value" id="admin-total-invoices">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Amount Paid</div>
+                <div class="stat-value" id="admin-amount-paid">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Amount Pending</div>
+                <div class="stat-value" id="admin-amount-pending">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Pending Requests</div>
+                <div class="stat-value" id="admin-pending-requests">--</div>
+            </div>
+        </div>
+
+        <div class="card block">
+            <h2>Customers (Account Monitoring)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Contact</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Invoices</th>
+                        <th>Requests</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-customer-body">
+                    <tr>
+                        <td colspan="8" style="text-align:center; padding:18px; color:#6b7280;">No customers loaded yet.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card block">
+            <h2>Admin Settings</h2>
+            <p class="muted" style="margin: 0 0 12px;">Change the admin password for this browser. (This demo stores it in localStorage.)</p>
+
+            <form id="admin-password-form" method="post" action="#">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="admin_current_password">Current password</label>
+                        <input type="password" id="admin_current_password" name="admin_current_password" required placeholder="Enter current password">
+                    </div>
+                    <div class="form-group">
+                        <label for="admin_new_password">New password</label>
+                        <input type="password" id="admin_new_password" name="admin_new_password" required minlength="6" placeholder="At least 6 characters">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="admin_confirm_password">Confirm new password</label>
+                    <input type="password" id="admin_confirm_password" name="admin_confirm_password" required minlength="6" placeholder="Repeat new password">
+                </div>
+
+                <button type="submit" class="btn primary">Update Admin Password</button>
+                <div id="admin-password-notice" class="notice" style="display:none; margin-top:16px;"></div>
+            </form>
+
+            <div class="notice" style="margin-top: 14px;">
+                <div style="font-weight:900; margin-bottom: 6px;">Password recovery code</div>
+                <div class="muted" style="margin-bottom: 10px;">Use this if you forget the admin password (Admin Forgot Password page).</div>
+                <div style="display:flex; gap: 10px; flex-wrap:wrap; align-items:center;">
+                    <code id="admin-recovery-value" style="padding: 10px 12px; border-radius: 12px; background: rgba(0,0,0,.18); border: 1px solid rgba(255,255,255,.10);">—</code>
+                    <button id="admin-recovery-regenerate" type="button" class="btn dark" style="padding: 10px 12px;">Regenerate</button>
+                    <a class="btn" href="admin-forgot-password.html" style="padding: 10px 12px;">Open reset page</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card block">
+            <h2>Service Requests</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Customer</th>
+                        <th>Service Type</th>
+                        <th>Description</th>
+                        <th>Requested Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-service-requests-body">
+                    <tr>
+                        <td colspan="6" style="text-align:center; padding:18px; color:#6b7280;">No service requests yet.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card block">
+            <h2>Latest Invoices</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Invoice #</th>
+                        <th>Customer</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-invoice-body">
+                    <tr>
+                        <td colspan="5" style="text-align:center; padding:18px; color:#6b7280;">No invoices found yet.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card block">
+            <h2>Create Invoice</h2>
+            <form id="invoice-form" method="post" action="#">
+                <div class="form-group">
+                    <label for="customer_id">Customer Email or Company</label>
+                    <input type="text" id="customer_id" name="customer_id" required placeholder="Enter customer email or company">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="invoice_number">Invoice Number</label>
+                        <input type="text" id="invoice_number" name="invoice_number" required placeholder="INV-xxxx">
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Amount</label>
+                        <input type="number" id="amount" name="amount" required step="0.01" placeholder="0.00">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="4" placeholder="Service description"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="due_date">Due Date</label>
+                    <input type="date" id="due_date" name="due_date" required>
+                </div>
+
+                <button type="submit" class="btn primary">Create Invoice</button>
+                <div id="invoice-submit-notice" class="notice good" style="display:none; margin-top:16px;"></div>
+                <p class="hint">This form creates an invoice for a registered customer.</p>
+            </form>
+        </div>
+
+        <dialog id="customer-dialog" style="border: 1px solid rgba(255,255,255,.14); border-radius: 16px; background: rgba(10,14,30,.96); color: rgba(255,255,255,.92); width: min(820px, calc(100vw - 24px)); box-shadow: 0 24px 70px rgba(0,0,0,.45);">
+            <div style="display:flex; justify-content: space-between; gap: 14px; align-items:flex-start; padding: 14px 14px 10px;">
+                <div>
+                    <div style="font-weight: 900; letter-spacing: -.2px; font-size: 16px;">Customer account</div>
+                    <div id="customer-dialog-sub" class="muted" style="margin-top: 4px;">—</div>
+                </div>
+                <button id="customer-dialog-close" class="btn dark" type="button" style="padding: 10px 12px;">Close</button>
+            </div>
+            <div style="padding: 0 14px 14px;">
+                <div id="customer-dialog-body" class="notice" style="background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.10);"></div>
+                <div class="muted" style="margin-top: 10px;">Security note: this is a demo. Don’t store real passwords in localStorage in production.</div>
+            </div>
+        </dialog>
+    </div>
+    <script src="auth.js" defer></script>
+</body>
+
+</html>
